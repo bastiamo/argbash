@@ -305,8 +305,8 @@ m4_define([_MAKE_HELP_FUNCTION_OPTIONAL_PART], [m4_lists_foreach_optional(
 m4_define([_MAKE_HELP_FUNCTION_ENVVARS_PART], [m4_do(
 	[m4_lists_foreach([ENV_NAMES,ENV_DEFAULTS,ENV_HELPS], [_name,_default,_help], [m4_do(
 		[m4_ifnblank(_help, [m4_list_append([LIST_ENV_HELP], m4_expand([m4_do(
-			[m4_expand([_name: _help.])],
-			[m4_ifnblank(_default, [ (default: ']_default'))],
+			[m4_expand([_name: _help])],
+			[m4_ifnblank(_default, [ (default: '_default')])],
 		)]))])],
 	)])],
 	[printf '\nEnvironment variables that are supported:\n'

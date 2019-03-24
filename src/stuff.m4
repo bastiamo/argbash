@@ -69,6 +69,10 @@ m4_define([_IF_HAVE_DOUBLEDASH], [m4_if(
 	m4_quote(HAVE_DOUBLEDASH), 1, [_IF_HAVE_POSITIONAL_ARGS([$1], [$2])],
 	[$2])])
 
+m4_define([_IF_HAVE_ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS], [m4_if(
+	m4_quote(HAVE_ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS), 1, [_IF_HAVE_POSITIONAL_ARGS([$1], [$2])],
+	[$2])])
+
 dnl
 dnl In your script, include just this directive (and DEFINE_SCRIPT_DIR before) to include the parsing stuff from a standalone file.
 dnl The argbash script generator will pick it up and (re)generate that one as well
@@ -820,9 +824,26 @@ m4_define([_HANDLE_OCCURENCE_OF_DOUBLEDASH_ARG_POSIX], [m4_do(
 )])
 
 
+m4_define([_HANDLE_OCCURENCE_OF_POSITIONALS_AFTER_OPTIONALS_ALWAYS], [m4_do(
+	[_COMM_BLOCK(_INDENT_LEVEL_IN_ARGV_WHILE,
+		[# Always break with first occurence of positional arguments,],
+		[# assign the rest of arguments as positional arguments and bail out.],
+	)],
+	[_JOIN_INDENTED(_INDENT_LEVEL_IN_ARGV_WHILE,
+		[if test $_positionals_count -gt 0 ],
+		[then],
+		_INDENT_MORE(
+			[_positionals+=("@S|@@")],
+			[_positionals_count=$((1 + @S|@#))],
+			[_last_positional="@S|@1"],
+			[break]),
+		[fi])],
+)])
+
 m4_define([_EVAL_OPTIONALS_AND_POSITIONALS], [m4_do(
 	[m4_n([_INDENT_(2)_key="$[]1"])],
 	[_IF_HAVE_DOUBLEDASH([_HANDLE_OCCURENCE_OF_DOUBLEDASH_ARG])],
+	[_IF_HAVE_ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS([_HANDLE_OCCURENCE_OF_POSITIONALS_AFTER_OPTIONALS_ALWAYS])],
 	[_MAKE_CASE_STATEMENT()],
 )])
 

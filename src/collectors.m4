@@ -498,6 +498,16 @@ m4_define([_ARG_POSITIONAL_DOUBLEDASH], [m4_do(
 )])
 
 
+argbash_api([ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS], [m4_do(
+	[m4_list_contains([BLACKLIST], [--], , [[$0($@)]_ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS($@)])],
+)])
+
+
+m4_define([_ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS], [m4_do(
+	[m4_define([HAVE_ARG_POSITIONALS_AFTER_OPTIONALS_ALWAYS], 1)],
+)])
+
+
 dnl
 dnl $1: The mode of argument grouping: One of 'none', 'getopts'
 argbash_api([ARG_OPTION_STACKING], _CHECK_PASSED_ARGS_COUNT(1)[m4_do(
